@@ -40,11 +40,35 @@ public class TemplateMethodTest {
     @Test
     void templateMethodV1() {
         AbstractTemplate template1 = new SubClassLogic1();
-        template1.execute();
+        template1.execute(); // template1의 excute를 실행 -> 오버라이딩된 subClassLogic1.call 메서드를 호출한다.
 
         AbstractTemplate template2 = new SubClassLogic2();
         template2.execute();
         
+    }
+
+    /**
+     * 템플릿 메서드의 단점 보완
+     * 익명 내부 클래스를 작성해서 sub1,sub2.. 클래스를 계속 만들지 않아도 된다.
+     */
+    @Test
+    void templateMethodV2() {
+        AbstractTemplate template1 = new AbstractTemplate() {
+            @Override
+            protected void call() {
+                log.info("비즈니스 로직1 실행");
+            }
+        };
+        template1.execute();
+        log.info("클래스 이름1 = {}", template1.getClass());
+        AbstractTemplate template2 = new AbstractTemplate() {
+            @Override
+            protected void call() {
+                log.info("비즈니스 로직2 실행");
+            }
+        };
+        template2.execute();
+        log.info("클래스 이름2 = {}", template2.getClass());
     }
 
 }
